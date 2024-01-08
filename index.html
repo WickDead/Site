@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How To Guides</title>
+<style>
+  /* Add styles here */
+  body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 40px;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    margin: 10px 0;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<h1>How To Guides</h1>
+
+<ul id="linksList"></ul>
+
+<script>
+  // Fetch the contents of the text file
+  fetch('links.txt')
+    .then(response => response.text())
+    .then(text => {
+      // Split the text into lines
+      const lines = text.split('\n');
+      
+      // Find the list element
+      const list = document.getElementById('linksList');
+
+      // Add each link as a list item
+      lines.forEach(line => {
+        const parts = line.split(','); // Split each line by comma
+        if(parts.length === 2) {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.textContent = parts[0].trim(); // The text of the link
+          a.href = parts[1].trim(); // The URL of the link
+          li.appendChild(a);
+          list.appendChild(li);
+        }
+      });
+    })
+    .catch(err => console.error('Failed to fetch links:', err));
+</script>
+
+</body>
+</html>
