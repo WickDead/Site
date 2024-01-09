@@ -1,2 +1,1 @@
-Guide 1,http://example.com/guide1
-Guide 2,http://example.com/guide2
+How to Search,http://wickdead.xyz/Search/search.html
