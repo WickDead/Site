@@ -36,6 +36,44 @@
     color: white;
     text-decoration: none;
   }
+  
+   form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: auto;
+  }
+  
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  label {
+    margin-bottom: 5px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+
+  input[type="checkbox"] {
+    margin-top: 5px;
+  }
+
+  input[type="submit"] {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+  }
+
+  input[type="submit"]:hover {
+    background-color: grey;
+  }
 
   a:hover {
     text-decoration: underline;
@@ -50,10 +88,26 @@
 	<ul id="linksList"></ul>
 </div>
 <div class="col">
+<h1>Join the Party</h1>
 <form action="https://formsubmit.co/09bd569afc5ff5b6c05374f53914f6a3" method="POST">
-     <input type="text" name="name" required>
-     <input type="email" name="email" required>
-     <button type="submit">Send</button>
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+  </div>
+
+  <div class="form-group">
+    <label>
+      <input type="checkbox" id="stick" name="stick" required>
+      Have my own Firestick
+    </label>
+  </div>
+
+  <button type="submit">Send</button>
 </form>
 </div>
 </div>
