@@ -2,6 +2,7 @@ Find and Move Wicked App Firestick,https://youtu.be/0rUFA6mB_AE
 Help everything is buffering!,http://wickdead.xyz/buffering/buffering.html
 How to Search,http://wickdead.xyz/Search/search.html
 Log out & Back In,http://wickdead.xyz/logoutin/logout.html
+Reset App (Clear Data),http://wickdead.xyz/cleardata/cleardata.html
 Manually Refresh EPG,http://wickdead.xyz/epg/epg.html
 Parental Lock / Hide Categories,https://www.youtube.com/watch?v=C-mc5A94iHU
 How to Find Login Username,http://wickdead.xyz/findlogin/findlogin.html
