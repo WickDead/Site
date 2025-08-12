@@ -6,5 +6,5 @@ Reset App (Clear Data),http://wickdead.xyz/cleardata/cleardata.html
 Manually Refresh EPG,http://wickdead.xyz/epg/epg.html
 Parental Lock / Hide Categories,https://www.youtube.com/watch?v=C-mc5A94iHU
 How to Find Login Username,http://wickdead.xyz/findlogin/findlogin.html
-Install App,https://youtu.be/Sfl1S_o1lT0
+Install App,http://wickdead.xyz/install/install.html
 
