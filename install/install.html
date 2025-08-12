@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide Detail</title>
+
+<!-- Link to Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+  body {
+    background-color: black;
+    color: white;
+  }
+
+  .custom-container {
+    padding-top: 20px;
+    background-color: black; /* Set the background to pure black */
+  }
+
+  .step-header {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  .step-description {
+    margin-bottom: 10px;
+  }
+
+  .step-images img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container custom-container">
+  <h1 class="text-center">Install App</h1>
+
+  <!-- PDF Embed Start -->
+  <div id="pdf-container" style="margin-bottom: 30px;"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    const url = 'Install.pdf';
+    const container = document.getElementById('pdf-container');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    pdfjsLib.getDocument(url).promise.then(function(pdf) {
+      for (let i = 1; i <= pdf.numPages; i++) {
+        pdf.getPage(i).then(function(page) {
+          const viewport = page.getViewport({ scale: 1.2 });
+          const canvas = document.createElement('canvas');
+          canvas.style.display = 'block';
+          canvas.style.margin = '0 auto 20px auto';
+          canvas.style.background = '#fff';
+          canvas.style.boxShadow = '0 2px 8px #0006';
+          canvas.style.borderRadius = '4px';
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          const context = canvas.getContext('2d');
+          const renderContext = {
+            canvasContext: context,
+            viewport: viewport
+          };
+          page.render(renderContext);
+          container.appendChild(canvas);
+        });
+      }
+    });
+  </script>
+  <!-- PDF Embed End -->
+
+  <div class="video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/Sfl1S_o1lT0?si=cN1vXjVhYDtzNLIi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- Optional: Link to Bootstrap JS and its dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

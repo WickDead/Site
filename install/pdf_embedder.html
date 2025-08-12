@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Embedder</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  #pdf-container {
+    width: 100%;
+    background: #222;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .pdf-page-canvas {
+    margin-bottom: 20px;
+    background: #fff;
+    box-shadow: 0 2px 8px #0006;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+<div id="pdf-container"></div>
+<script>
+  const url = 'Install.pdf';
+  const container = document.getElementById('pdf-container');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  pdfjsLib.getDocument(url).promise.then(function(pdf) {
+    for (let i = 1; i <= pdf.numPages; i++) {
+      pdf.getPage(i).then(function(page) {
+        const viewport = page.getViewport({ scale: 1.2 });
+        const canvas = document.createElement('canvas');
+        canvas.className = 'pdf-page-canvas';
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        const context = canvas.getContext('2d');
+        const renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+        page.render(renderContext);
+        container.appendChild(canvas);
+      });
+    }
+  });
+</script>
+</body>
+</html>
