@@ -7,6 +7,7 @@
 
 <!-- Link to Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="../responsive.css">
 
 <style>
   body {
@@ -34,6 +35,10 @@
     display: block;
     margin-bottom: 10px;
   }
+
+  #pdf-container {
+    margin-bottom: 30px;
+  }
 </style>
 </head>
 <body>
@@ -42,33 +47,65 @@
   <h1 class="text-center">Install App</h1>
 
   <!-- PDF Embed Start -->
-  <div id="pdf-container" style="margin-bottom: 30px;"></div>
+  <div id="pdf-container"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
     const url = 'Install.pdf';
     const container = document.getElementById('pdf-container');
+    const maxPageWidth = 1000;
+    let loadedPdf = null;
+    let resizeDebounceTimer = null;
+
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    pdfjsLib.getDocument(url).promise.then(function(pdf) {
+
+    async function renderPdfPages(pdf) {
+      container.innerHTML = '';
+      const availableWidth = Math.min(container.clientWidth || window.innerWidth, maxPageWidth);
+      const pixelRatio = window.devicePixelRatio || 1;
+
       for (let i = 1; i <= pdf.numPages; i++) {
-        pdf.getPage(i).then(function(page) {
-          const viewport = page.getViewport({ scale: 1.2 });
-          const canvas = document.createElement('canvas');
-          canvas.style.display = 'block';
-          canvas.style.margin = '0 auto 20px auto';
-          canvas.style.background = '#fff';
-          canvas.style.boxShadow = '0 2px 8px #0006';
-          canvas.style.borderRadius = '4px';
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-          const context = canvas.getContext('2d');
-          const renderContext = {
-            canvasContext: context,
-            viewport: viewport
-          };
-          page.render(renderContext);
-          container.appendChild(canvas);
-        });
+        const page = await pdf.getPage(i);
+        const baseViewport = page.getViewport({ scale: 1 });
+        const scale = availableWidth / baseViewport.width;
+        const viewport = page.getViewport({ scale: scale });
+
+        const canvas = document.createElement('canvas');
+        canvas.style.display = 'block';
+        canvas.style.margin = '0 auto 20px auto';
+        canvas.style.background = '#fff';
+        canvas.style.boxShadow = '0 2px 8px #0006';
+        canvas.style.borderRadius = '4px';
+        canvas.style.width = viewport.width + 'px';
+        canvas.style.height = viewport.height + 'px';
+        canvas.width = Math.floor(viewport.width * pixelRatio);
+        canvas.height = Math.floor(viewport.height * pixelRatio);
+
+        const context = canvas.getContext('2d');
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+        await page.render({
+          canvasContext: context,
+          viewport: viewport
+        }).promise;
+
+        container.appendChild(canvas);
       }
+    }
+
+    pdfjsLib.getDocument(url).promise.then(async function(pdf) {
+      loadedPdf = pdf;
+      await renderPdfPages(pdf);
+    });
+
+    window.addEventListener('resize', function() {
+      if (!loadedPdf) {
+        return;
+      }
+
+      clearTimeout(resizeDebounceTimer);
+      resizeDebounceTimer = setTimeout(function() {
+        renderPdfPages(loadedPdf);
+      }, 200);
     });
   </script>
   <!-- PDF Embed End -->
